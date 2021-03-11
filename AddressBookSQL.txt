@@ -1,0 +1,269 @@
+# Welcome to the AddressBookSystemDB Problem 
+
+# UC1 Create DataBase AddressBookSystemDB
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| payroll_service    |
+| performance_schema |
+| sakila             |
+| sample             |
+| sys                |
+| world              |
++--------------------+
+
+mysql> create database AddressBookSystemDB
+
+mysql> show databases;
+
++---------------------+
+| Database            |
++---------------------+
+| addressbooksystemdb |
+| information_schema  |
+| mysql               |
+| payroll_service     |
+| performance_schema  |
+| sakila              |
+| sample              |
+| sys                 |
+| world               |
++---------------------+
+
+# UC2 Create table addressbook 
+
+mysql> create table addressbook
+    -> ( firstname      varchar(30)     not null,
+    ->   lastname       varchar(30)     not null,
+    ->   address        varchar(150)    not null,
+    ->   city           varchar(30)     not null,
+    ->   state          varchar(30)     not null,
+    ->   zip            varchar(6)      not null,
+    ->   phonenumber    varchar(15)     not null,
+    ->   email          varchar(30)     not null,
+    ->   primary key    (firstname, lastname)
+    -> );
+
+
+mysql> desc addressbook;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| firstname   | varchar(30)  | NO   | PRI | NULL    |       |
+| lastname    | varchar(30)  | NO   | PRI | NULL    |       |
+| address     | varchar(150) | NO   |     | NULL    |       |
+| city        | varchar(30)  | NO   |     | NULL    |       |
+| state       | varchar(30)  | NO   |     | NULL    |       |
+| zip         | varchar(6)   | NO   |     | NULL    |       |
+| phonenumber | varchar(15)  | NO   |     | NULL    |       |
+| email       | varchar(30)  | NO   |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+
+#UC3 Insert the data in the addressbook
+
+mysql> insert into addressbook (firstname, lastname, address, city, state, zip,phonenumber, email) values
+    -> ('Mark', 'Zuck', 'F-91 Silicon Valley','San Francisco', 'California','204030','+17958694534','markz@rediffmail.com'),
+    -> ('Bill', 'Gates', 'Bo-4 Medina','Seattle', 'Washington','204020','+1989849489','bill@outlook.com'),
+    -> ('Strivi', 'Ahuja', 'A-4 Silicon City','Bhopal', 'MP','404020','+91545544332','strivi@gmail.com');
+
+
+mysql> select * from addressbook;
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+| firstname | lastname | address             | city          | state      | zip    | phonenumber  | email                |
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+| Bill      | Gates    | Bo-4 Medina         | Seattle       | Washington | 204020 | +1989849489  | bill@outlook.com     |
+| Mark      | Zuck     | F-91 Silicon Valley | San Francisco | California | 204030 | +17958694534 | markz@rediffmail.com |
+| Strivi    | Ahuja    | A-4 Silicon City    | Bhopal        | MP         | 404020 | +91645544332 | strivi@gmail.com     |
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+
+# UC4 edit addressbook details
+
+mysql> update addressbook set phonenumber = '+13462363262' where firstname = 'Mark' and lastname = 'Zuck';
+
+mysql> select * from addressbook;
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+| firstname | lastname | address             | city          | state      | zip	   | phonenumber  | email                |
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+| Bill      | Gates    | Bo-4 Medina         | Seattle       | Washington | 204020 | +1989849489  | bill@outlook.com     |
+| Mark      | Zuck     | F-91 Silicon Valley | San Francisco | California | 204030 | +13462363262 | markz@rediffmail.com |
+| Strivi    | Ahuja    | A-4 Silicon City    | Bhopal        | MP         | 404020 | +91545544332 | strivi@gmail.com     |
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+
+
+# UC5 Delete addressbook Contact Details
+
+mysql> delete from addressbook where firstname = 'Bill' and lastname = 'Gates';
+
+mysql> select * from addressbook;
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+| firstname | lastname | address             | city          | state      | zip    | phonenumber  | email                |
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+| Mark      | Zuck     | F-91 Silicon Valley | San Francisco | California | 204030 | +13462363262 | markz@rediffmail.com |
+| Strivi    | Ahuja    | A-4 Silicon City    | Bhopal        | MP         | 404020 | +91545544332 | strivi@gmail.com     |
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+
+# UC6 Ability to retrieve contact details by state name or city name 
+
+mysql> select * from addressbook where city = 'Bhopal' or state = 'California';
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+| firstname | lastname | address             | city          | state      | zip| phonenumber  | email                |
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+| Mark      | Zuck     | F-91 Silicon Valley | San Francisco | California | 204030 | +13462363262 | markz@rediffmail.com |
+| Strivi    | Ahuja    | A-4 Silicon City    | Bhopal        | MP         | 404020 | +91545544332 | strivi@gmail.com     |
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+
+
+mysql> select * from addressbook where city = 'San Francisco' ;
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+| firstname | lastname | address             | city          | state      | zip | phonenumber  | email                |
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+| Mark      | Zuck     | F-91 Silicon Valley | San Francisco | California | 204030 | +13462363262 | markz@rediffmail.com |
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+
+mysql> select * from addressbook where  state = 'California';
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+| firstname | lastname | address             | city          | state      | zip| phonenumber  | email                |
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+| Mark      | Zuck     | F-91 Silicon Valley | San Francisco | California | 204030 | +13462363262 | markz@rediffmail.com |
++-----------+----------+---------------------+---------------+------------+--------+--------------+----------------------+
+
+
+mysql> select * from addressbook where  state = 'MP';
++-----------+----------+------------------+--------+-------+--------+--------------+------------------+
+| firstname | lastname | address          | city   | state | zip    | phonenumber  | email            |
++-----------+----------+------------------+--------+-------+--------+--------------+------------------+
+| Strivi    | Ahuja    | A-4 Silicon City | Bhopal | MP    | 404020 | +915455443
+32 | strivi@gmail.com |
++-----------+----------+------------------+--------+-------+--------+--------------+------------------+
+
+# Inserted data to get good idea of count
+
+mysql> insert into addressbook values
+    -> ('Shristi', 'Gupta', 'B6 Navlakha','Indore', 'MP','409020','+916565644332','sris@gmail.com'),
+    -> ('Mark', 'King', 'F-88 Silicon Valley','Tolouse', 'California','204056','+143434345655','markz@rediff.com');
+
+
+mysql> select * from addressbook;
++-----------+----------+---------------------+---------------+------------+--------+---------------+----------------------+
+| firstname | lastname | address             | city          | state      | zip | phonenumber   | email                |
++-----------+----------+---------------------+---------------+------------+--------+---------------+----------------------+
+| Mark      | King     | F-88 Silicon Valley | Tolouse       | California | 204056 | +143434345655 | markz@rediff.com     |
+| Mark      | Zuck     | F-91 Silicon Valley | San Francisco | California | 204030 | +13462363262  | markz@rediffmail.com |
+| Shristi   | Gupta    | B6 Navlakha         | Indore        | MP         | 409020 | +916565644332 | sris@gmail.com       |
+| Strivi    | Ahuja    | A-4 Silicon City    | Bhopal        | MP         | 404020 | +91545544332  | strivi@gmail.com     |
++-----------+----------+---------------------+---------------+------------+--------+---------------+----------------------+
+
+
+# UC7 Size of the addressbook by ciy and state
+
+mysql> select state,count(state) from addressbook group by state;
++------------+--------------+
+| state      | count(state) |
++------------+--------------+
+| California |            2 |
+| MP         |            2 |
++------------+--------------+
+
+
+mysql> select city,count(city) from addressbook group by city;
++---------------+-------------+
+| city          | count(city) |
++---------------+-------------+
+| Tolouse       |           1 |
+| San Francisco |           1 |
+| Indore        |           1 |
+| Bhopal        |           1 |
++---------------+-------------+
+
+
+
+mysql> insert into addressbook values
+    -> ('Marsh', 'Mellow', 'F-98 Silicon Valley','San Francisco', 'California','
+454056','+187887875654','marshmellow@rediff.com'),
+    -> ('Aksh', 'Mehta', ' Silicon City','Indore', 'MP','450000','+18783445654',
+'aksh@gmail.com'),
+    -> ('Rohan', 'Bajaj', ' PITH','Indore', 'MP','450000','+91347348734','moneyk
+icks@gmail.com');
+
+mysql> select * from addressbook;
++-----------+----------+---------------------+---------------+------------+--------+---------------+------------------------+
+| firstname | lastname | address             | city          | state      | zip| phonenumber   | email                  |
++-----------+----------+---------------------+---------------+------------+--------+---------------+------------------------+
+| Aksh      | Mehta    |  Silicon City       | Indore        | MP         | 450000 | +18783445654  | aksh@gmail.com         |
+| Mark      | King     | F-88 Silicon Valley | Tolouse       | California | 204056 | +143434345655 | markz@rediff.com       |
+| Mark      | Zuck     | F-91 Silicon Valley | San Francisco | California | 204030 | +13462363262  | markz@rediffmail.com   |
+| Marsh     | Mellow   | F-98 Silicon Valley | San Francisco | California | 454056 | +187887875654 | marshmellow@rediff.com |
+| Rohan     | Bajaj    |  PITH               | Indore        | MP         | 450000 | +91347348734  | moneykicks@gmail.com   |
+| Shristi   | Gupta    | B6 Navlakha         | Indore        | MP         | 409020 | +916565644332 | sris@gmail.com         |
+| Strivi    | Ahuja    | A-4 Silicon City    | Bhopal        | MP         | 404020 | +91545544332  | strivi@gmail.com       |
++-----------+----------+---------------------+---------------+------------+--------+---------------+------------------------+
+
+# UC8 Retireve entires sorted alphabetically by persons name for city given
+
+mysql> select * from addressbook where city = 'Indore' order by firstname asc;
++-----------+----------+---------------+--------+-------+--------+---------------+----------------------+
+| firstname | lastname | address       | city   | state | zip    | phonenumber  | email                |
++-----------+----------+---------------+--------+-------+--------+---------------+----------------------+
+| Aksh      | Mehta    |  Silicon City | Indore | MP    | 450000 | +18783445654 | aksh@gmail.com       |
+| Rohan     | Bajaj    |  PITH         | Indore | MP    | 450000 | +91347348734 | moneykicks@gmail.com |
+| Shristi   | Gupta    | B6 Navlakha   | Indore | MP    | 409020 | +916565644332| sris@gmail.com       |
++-----------+----------+---------------+--------+-------+--------+---------------+----------------------+
+
+
+# UC9 Identify addressbook with name and type 
+mysql> alter table addressbook add name varchar(15);
+
+mysql> alter table addressbook add type varchar(15) default 'Family';
+
+mysql> update addressbook set type = 'Self' where lastname = 'King' or firstname
+ = 'Aksh';
+
+mysql> update addressbook set type = 'Personal' where lastname = 'Gupta';
+
+mysql> update addressbook set type = 'Professional' where lastname = 'Zuck';
+
+mysql> select * from addressbook;
++-----------+----------+---------------------+---------------+------------+--------+---------------+------------------------+------+--------------+
+| firstname | lastname | address             | city          | state      | zip	   | phonenumber   | email                  | name | type         |
++-----------+----------+---------------------+---------------+------------+--------+---------------+------------------------+------+--------------+
+| Aksh      | Mehta    |  Silicon City       | Indore        | MP         | 450000 | +18783445654  | aksh@gmail.com         | NULL | Self         |
+| Mark      | King     | F-88 Silicon Valley | Tolouse       | California | 204056 | +143434345655 | markz@rediff.com       | NULL | Self         |
+| Mark      | Zuck     | F-91 Silicon Valley | San Francisco | California | 204030 | +13462363262  | markz@rediffmail.com   | NULL | Professional |
+| Marsh     | Mellow   | F-98 Silicon Valley | San Francisco | California | 454056 | +187887875654 | marshmellow@rediff.com | NULL | Family       |
+| Rohan     | Bajaj    |  PITH               | Indore        | MP         | 450000 | +91347348734  | moneykicks@gmail.com   | NULL | Family       |
+| Shristi   | Gupta    | B6 Navlakha         | Indore        | MP         | 409020 | +916565644332 | sris@gmail.com         | NULL | Personal     |
+| Strivi    | Ahuja    | A-4 Silicon City    | Bhopal        | MP         | 404020 | +91545544332  | strivi@gmail.com       | NULL | Family       |
++-----------+----------+---------------------+---------------+------------+--------+---------------+------------------------+------+--------------+
+
+# 10 number of contacts  (count by type)
+mysql> select count(type) from addressbook;
++-------------+
+| count(type) |
++-------------+
+|           7 |
++-------------+
+
+# 11 Duplicate Entry of person with change in type (done in another db with primary key as name only)
+
+mysql> insert into addressbook values
+    -> ('Marsh', 'Mellow', 'F-98 Silicon Valley','San Francisco', 'California','
+454056','+187887875654','marshmellow@rediff.com','null', 'Friend');
+
+
+mysql> select * from addressbook;
++-----------+----------+---------------------+---------------+------------+--------+---------------+------------------------+------+--------------+
+| firstname | lastname | address             | city          | state      | zip	   | phonenumber   | email                  | name | type         |
++-----------+----------+---------------------+---------------+------------+--------+---------------+------------------------+------+--------------+
+| Aksh      | Mehta    |  Silicon City       | Indore        | MP         | 450000 | +18783445654  | aksh@gmail.com         | NULL | Self         |
+| Mark      | King     | F-88 Silicon Valley | Tolouse       | California | 204056 | +143434345655 | markz@rediff.com       | NULL | Self         |
+| Mark      | Zuck     | F-91 Silicon Valley | San Francisco | California | 204030 | +13462363262  | markz@rediffmail.com   | NULL | Professional |
+| Marsh     | Mellow   | F-98 Silicon Valley | San Francisco | California | 454056 | +187887875654 | marshmellow@rediff.com | NULL | Family       |
+| Marsh     | Mellow   | F-98 Silicon Valley | San Francisco | California | 454056 | +187887875654 | marshmellow@rediff.com | NULL | Friend       |
+| Rohan     | Bajaj    |  PITH               | Indore        | MP         | 450000 | +91347348734  | moneykicks@gmail.com   | NULL | Family       |
+| Shristi   | Gupta    | B6 Navlakha         | Indore        | MP         | 409020 | +916565644332 | sris@gmail.com         | NULL | Personal     |
+| Strivi    | Ahuja    | A-4 Silicon City    | Bhopal        | MP         | 404020 | +91545544332  | strivi@gmail.com       | NULL | Family       |
++-----------+----------+---------------------+---------------+------------+--------+---------------+------------------------+------+--------------+
